@@ -45,6 +45,7 @@ function run_script() {
 # Target scripts as elements
 scripts=(
 	/ctx/00-pre.sh
+	/ctx/install-vscode.sh
 	/ctx/install-docker.sh
 	/ctx/install-localwp.sh
 	/ctx/98-optfix.sh

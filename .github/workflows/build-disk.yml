@@ -27,6 +27,12 @@ env:
   IMAGE_NAME: ${{ github.event.repository.name }} # output of build.yml, keep in sync
   IMAGE_REGISTRY: "ghcr.io/${{ github.repository_owner }}"  # do not edit
   DEFAULT_TAG: "latest"
+  # List of bootc image builders
+  # ghcr.io/osbuild/bootc-image-builder:latest
+  # ghcr.io/centos-workstation/bootc-image-builder:latest - unmaintained?
+  # ghcr.io/lorbuschris/bootc-image-builder:20250608 - deleted
+  # quay.io/centos-bootc/bootc-image-builder
+  # see https://github.com/osbuild/bootc-image-builder/pull/954
   BIB_IMAGE: "quay.io/centos-bootc/bootc-image-builder:latest"
 
 concurrency:
@@ -70,9 +76,23 @@ jobs:
 
       - name: Maximize build space
         if: inputs.platform != 'arm64'
-        uses: ublue-os/remove-unwanted-software@cc0becac701cf642c8f0a6613bbdaf5dc36b259e # v9
+        uses: ublue-os/remove-unwanted-software@695eb75bc387dbcd9685a8e72d23439d8686cba6
         with:
-          remove-codeql: true
+          extra-squeeze: false
+
+      - name: Mount BTRFS for podman storage
+        id: container-storage-action
+        uses: ublue-os/container-storage-action@dc1f4c8f17b672069e921f001132f7cf98a423a6
+        continue-on-error: true
+        with:
+          target-dir: /var/lib/containers
+          mount-opts: compress-force=zstd:2
+          # loopback-free: 1.0
+
+      - name: Show disk space
+        run: |
+          echo "Available space"
+          df -h
 
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
@@ -86,17 +106,20 @@ jobs:
           image: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }}
           chown: ${{ env.USER_UID }}:${{ env.USER_GID }}
           types: ${{ matrix.disk-type }}
-          additional-args: --use-librepo=True
+          additional-args: >-
+            --use-librepo=True
+            --rootfs=btrfs
 
       - name: Upload disk images and Checksum to Job Artifacts
         if: inputs.upload-to-s3 != true && github.event_name != 'pull_request'
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
         with:
+          name: disk-${{ matrix.disk-type }}-${{ runner.arch }}
           path: ${{ steps.build.outputs.output-directory }}
           if-no-files-found: error
           retention-days: 0
           compression-level: 0
-          overwrite: true
+          overwrite: false
       
       - name: Upload to S3
         if: inputs.upload-to-s3 == true && github.event_name != 'pull_request'

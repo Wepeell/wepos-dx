@@ -45,7 +45,7 @@ function run_script() {
 # Target scripts as elements
 scripts=(
 	/ctx/00-pre.sh
-	/ctx/install-docker
+	/ctx/install-docker.sh
 	/ctx/98-optfix.sh
 	/ctx/99-post.sh
 )

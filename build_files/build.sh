@@ -46,6 +46,7 @@ function run_script() {
 scripts=(
 	/ctx/00-pre.sh
 	/ctx/install-docker.sh
+	/ctx/install-localwp.sh
 	/ctx/98-optfix.sh
 	/ctx/99-post.sh
 )

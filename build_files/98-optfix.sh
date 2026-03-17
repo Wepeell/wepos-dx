@@ -12,8 +12,11 @@ TMPFILESD_CONF="/usr/lib/tmpfiles.d/optfix.conf"
 
 # Check if /var/opt has content
 if compgen -G "${VAR_OPT_DIR}/*" > /dev/null; then
+	# Create /usr/lib/optfix
+	mkdir -p /usr/lib/optfix
+
 	# Move /var/opt to /usr/lib/optfix
-	mv "${VAR_OPT_DIR}" "${LIB_OPTFIX_DIR}"
+	mv "${VAR_OPT_DIR}"/* "${LIB_OPTFIX_DIR}/"
 
 	# Generate tmpfiles.d config
 	# Creates symlinks from /var/opt/<installed folder> to /usr/lib/optfix/<installed folder> on boot

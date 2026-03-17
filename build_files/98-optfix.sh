@@ -18,10 +18,17 @@ if compgen -G "${VAR_OPT_DIR}/*" > /dev/null; then
 	# Move /var/opt to /usr/lib/optfix
 	mv "${VAR_OPT_DIR}"/* "${LIB_OPTFIX_DIR}/"
 
-	# Generate tmpfiles.d config
+	### Generate tmpfiles.d config
+	# Create temporary file and set permissions
+	TMPFILE="$(mktemp)"
+	chmod 644 "$TMPFILE"
+
 	# Creates symlinks from /var/opt/<installed folder> to /usr/lib/optfix/<installed folder> on boot
-	for DIR in ${LIB_OPTFIX_DIR}/*; do
+	for DIR in "${LIB_OPTFIX_DIR}"/*; do
 		NAME_DIR=$(basename "$DIR")
-		echo "L+? '${VAR_OPT_DIR}/${NAME_DIR}' - - - - ${LIB_OPTFIX_DIR}/${NAME_DIR}" >> "${TMPFILESD_CONF}"
+		echo "L+? '${VAR_OPT_DIR}/${NAME_DIR}' - - - - ${LIB_OPTFIX_DIR}/${NAME_DIR}" >> "$TMPFILE"
 	done
+
+	# Move temporary file to optfix.conf
+	mv "$TMPFILE" "${TMPFILESD_CONF}"
 fi

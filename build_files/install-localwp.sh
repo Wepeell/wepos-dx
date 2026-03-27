@@ -12,7 +12,7 @@ package_url="https://cdn.localwp.com/releases-stable/10.0.0+6907/local-10.0.0-li
 
 ### Check if base image packages are being replaced
 # Dry run
-dnf5 -y install --setopt=tsflags=test "$package_url" 2>&1 | tee /tmp/dryrun.log
+dnf5 -y install --disablerepo=updates --setopt=tsflags=test "$package_url" 2>&1 | tee /tmp/dryrun.log
 
 # Check log for upgrading and downgrading
 if grep -qE '^(Upgrading|Downgrading):' /tmp/dryrun.log; then
@@ -21,4 +21,4 @@ if grep -qE '^(Upgrading|Downgrading):' /tmp/dryrun.log; then
 fi
 
 ### Install package
-dnf5 -y install "$package_url"
+dnf5 -y install --disablerepo=updates "$package_url"

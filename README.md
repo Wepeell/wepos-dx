@@ -5,6 +5,7 @@ This is a variant of [WepOS](https://github.com/Wepeell/wepos) (`wepos:latest`) 
 ## Things added
 
 - [Docker](https://docs.docker.com/engine/install/fedora)
+- [Local](https://localwp.com/releases/)
 - [VS Code](https://github.com/microsoft/vscode)
 
 ## Custom wjust commands

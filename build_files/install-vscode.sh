@@ -12,8 +12,10 @@ repo_base_url="https://packages.microsoft.com/yumrepos/vscode"
 ### Repo ID
 repo_id="vscode"
 
-### Package name
-package_name="code"
+### Packages array
+packages=(
+	code
+)
 
 ### Enable repo
 dnf5 -y config-manager addrepo --set=baseurl="$repo_base_url" --id="$repo_id"
@@ -24,7 +26,7 @@ dnf5 config-manager setopt vscode.gpgcheck=0
 
 ### Check if base image packages are being replaced
 # Dry run
-dnf5 -y install --setopt=tsflags=test --nogpgcheck "$package_name" 2>&1 | tee /tmp/dryrun.log
+dnf5 -y install --setopt=tsflags=test --nogpgcheck "${packages[@]}" 2>&1 | tee /tmp/dryrun.log
 
 # Check log for upgrading and downgrading
 if grep -qE '^(Upgrading|Downgrading):' /tmp/dryrun.log; then
@@ -33,7 +35,7 @@ if grep -qE '^(Upgrading|Downgrading):' /tmp/dryrun.log; then
 fi
 
 ### Install package
-dnf5 -y install --nogpgcheck "$package_name"
+dnf5 -y install --nogpgcheck "${packages[@]}"
 
 ### Disable repo
 dnf5 -y config-manager setopt "*${repo_id}*".enabled=false

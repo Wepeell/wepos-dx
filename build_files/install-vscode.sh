@@ -34,7 +34,7 @@ if grep -qE '^(Upgrading|Downgrading):' /tmp/dryrun.log; then
 	exit 1
 fi
 
-### Install package
+### Install packages
 dnf5 -y install --nogpgcheck "${packages[@]}"
 
 ### Disable repo

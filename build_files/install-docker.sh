@@ -7,6 +7,9 @@ set -ouex pipefail
 # https://docs.docker.com/engine/install/fedora/
 # https://docs.docker.com/engine/install/linux-postinstall
 
+### Repofile
+repofile="https://download.docker.com/linux/fedora/docker-ce.repo"
+
 ### Packages array
 packages=(
     containerd.io
@@ -17,7 +20,7 @@ packages=(
 )
 
 # Add Docker repo
-dnf5 config-manager addrepo --from-repofile="https://download.docker.com/linux/fedora/docker-ce.repo"
+dnf5 config-manager addrepo --from-repofile="$repofile"
 
 ### Check if base image packages are being replaced
 # Dry run

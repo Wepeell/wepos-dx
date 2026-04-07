@@ -7,8 +7,8 @@ set -ouex pipefail
 # https://docs.docker.com/engine/install/fedora/
 # https://docs.docker.com/engine/install/linux-postinstall
 
-# Packages
-docker_pkgs=(
+### Packages array
+packages=(
     containerd.io
     docker-buildx-plugin
     docker-ce
@@ -19,12 +19,9 @@ docker_pkgs=(
 # Add Docker repo
 dnf5 config-manager addrepo --from-repofile="https://download.docker.com/linux/fedora/docker-ce.repo"
 
-# Disable repo
-dnf5 config-manager setopt docker-ce-stable.enabled=0
-
 ### Check if base image packages are being replaced
 # Dry run
-dnf5 -y install --enable-repo="docker-ce-stable" --setopt=tsflags=test "${docker_pkgs[@]}" 2>&1 | tee /tmp/dryrun.log
+dnf5 -y install --setopt=tsflags=test "${packages[@]}" 2>&1 | tee /tmp/dryrun.log
 
 # Check log for upgrading and downgrading
 if grep -qE '^(Upgrading|Downgrading):' /tmp/dryrun.log; then
@@ -32,14 +29,11 @@ if grep -qE '^(Upgrading|Downgrading):' /tmp/dryrun.log; then
 	exit 1
 fi
 
-# Temporarily enable repo and install Docker packages
-dnf5 install -y --enable-repo="docker-ce-stable" "${docker_pkgs[@]}" || {
-    # Use test packages if docker pkgs is not available for f42
-    if (($(lsb_release -sr) == 42)); then
-        echo "::info::Missing docker packages in f42, falling back to test repos..."
-        dnf5 install -y --enablerepo="docker-ce-test" "${docker_pkgs[@]}"
-    fi
-}
+### Install packages
+dnf5 -y install "${packages[@]}"
+
+# Disable repo
+dnf5 config-manager setopt docker-ce-stable.enabled=0
 
 # Load iptable_nat module for docker-in-docker.
 # See:

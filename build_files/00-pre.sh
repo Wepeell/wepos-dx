@@ -24,10 +24,8 @@ packages_lock=(
 	nss-util
 )
 
-for package_lock in "${packages_lock[@]}"; do
-	if rpm -q "$package_lock" >/dev/null 2>&1; then
-		dnf5 versionlock add "$(rpm -q "$package_lock")"
-	else
-		echo "Skipping $package_lock (not installed)"
-	fi
+for pkg in "${packages_lock[@]}"; do
+	rpm -q "$pkg" | while read -r nevra; do
+		dnf5 versionlock add "$nevra"
+	done
 done

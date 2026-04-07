@@ -40,4 +40,4 @@ iptable_nat
 EOF
 
 # Start Docker Engine service
-systemctl enable --now docker
+systemctl enable docker

@@ -7,18 +7,20 @@ set -ouex pipefail
 # https://docs.docker.com/engine/install/fedora/
 # https://docs.docker.com/engine/install/linux-postinstall
 
-# Package URL
-package_url="https://cdn.localwp.com/releases-stable/10.0.0+6907/local-10.0.0-linux.rpm"
+### Packages array
+packages=(
+	https://cdn.localwp.com/releases-stable/10.0.0+6907/local-10.0.0-linux.rpm
+)
 
 ### Check if base image packages are being replaced
 # Dry run
-dnf5 -y install --setopt=tsflags=test "$package_url" 2>&1 | tee /tmp/dryrun.log
+dnf5 -y install --setopt=tsflags=test "${packages[@]}" 2>&1 | tee /tmp/dryrun.log
 
 # Check log for upgrading and downgrading
 if grep -qE '^(Upgrading|Downgrading):' /tmp/dryrun.log; then
-	echo ":notice::Detected package replacements. Aborting build."
+	echo "::notice::Detected package replacements. Aborting build."
 	exit 1
 fi
 
-### Install package
-dnf5 -y install "$package_url"
+### Install packages
+dnf5 -y install "${packages[@]}"

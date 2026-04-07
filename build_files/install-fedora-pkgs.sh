@@ -22,5 +22,5 @@ if grep -qE '^(Upgrading|Downgrading):' /tmp/dryrun.log; then
 	exit 1
 fi
 
-### Install Fedora packages from array
+### Install packages
 dnf5 -y install "${packages[@]}"

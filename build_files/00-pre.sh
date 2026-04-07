@@ -17,6 +17,7 @@ mkdir -p /var/opt
 
 ### Version lock packages
 packages_lock=(
+	# localwp dependencies
 	nss
 	nss-softokn
 	nss-softokn-freebl

@@ -19,7 +19,7 @@ packages=(
     docker-compose-plugin
 )
 
-# Add Docker repo
+# Add repo
 dnf5 config-manager addrepo --from-repofile="$repofile"
 
 ### Check if base image packages are being replaced

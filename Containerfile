@@ -3,7 +3,7 @@ FROM scratch AS ctx
 COPY build_files /
 
 # Base Image
-FROM ghcr.io/wepeell/wepos:latest@sha256:7e7f70c70da428c3619e4f317e998ead229ea52b4bcf5ddae9ff7e37861f88ab
+FROM ghcr.io/wepeell/wepos:latest@sha256:71a663fdf2bed24908f077309dda224d8e5651a08d55a5d4ddf1b49824e1845d
 
 ## Other possible base images include:
 # FROM ghcr.io/ublue-os/bazzite:latest

@@ -9,7 +9,7 @@ set -ouex pipefail
 
 ### Packages array
 packages=(
-	https://cdn.localwp.com/releases-stable/10.1.0+6912/local-10.1.0-linux.rpm
+	https://cdn.localwp.com/releases-stable/10.1.1+6939/local-10.1.1-linux.rpm
 )
 
 ### Check if base image packages are being replaced

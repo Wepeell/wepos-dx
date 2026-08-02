@@ -4,3 +4,4 @@ output
 _build-*/**
 *.kate-swp
 patch.diff
+*_chunkah_*

@@ -149,7 +149,6 @@ rechunk $target_image=image_name $tag=default_tag:
       --mount=type=image,src="${target_image}:${tag}",target=/chunkah \
       -v "${CHUNKAH_CONFIG_FILE}:/chunkah-config.json:ro,Z" \
       -v "${CHUNKAH_OUTPUT_DIR}:/run/out:Z" \
-      -e SOURCE_DATE_EPOCH=0 \
       quay.io/coreos/chunkah:latest \
       build \
       --verbose \
@@ -176,11 +175,11 @@ ostree-rechunk $target_image=image_name $tag=default_tag:
       exit 1
     fi
 
-    # You can use your own base image here to avoid pulling fedora-bootc
-    RPM_OSTREE_CHUNKER_IMAGE="quay.io/fedora/fedora-bootc:latest"
+    # Use the already-built local image to avoid pulling from a remote registry
+    RPM_OSTREE_CHUNKER_IMAGE="localhost/${target_image}:${tag}"
 
     podman run --rm \
-      --pull=newer \
+      --pull=never \
       --privileged \
       -v "/var/lib/containers:/var/lib/containers" \
       --entrypoint /usr/bin/rpm-ostree \

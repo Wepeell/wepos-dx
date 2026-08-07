@@ -9,7 +9,7 @@ set -ouex pipefail
 
 ### Packages array
 packages=(
-	ncurses-compat-libs
+    ncurses-compat-libs
 )
 
 ### Check if base image packages are being replaced
@@ -18,8 +18,8 @@ dnf5 -y install --setopt=tsflags=test "${packages[@]}" 2>&1 | tee /tmp/dryrun.lo
 
 # Check log for upgrading and downgrading
 if grep -qE '^(Upgrading|Downgrading):' /tmp/dryrun.log; then
-	echo "::notice::Detected package replacements. Aborting build."
-	exit 1
+    echo "::notice::Detected package replacements. Aborting build."
+    exit 1
 fi
 
 ### Install packages

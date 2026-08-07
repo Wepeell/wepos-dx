@@ -14,7 +14,7 @@ repo_id="vscode"
 
 ### Packages array
 packages=(
-	code
+    code
 )
 
 ### Enable repo
@@ -30,8 +30,8 @@ dnf5 -y install --setopt=tsflags=test --nogpgcheck "${packages[@]}" 2>&1 | tee /
 
 # Check log for upgrading and downgrading
 if grep -qE '^(Upgrading|Downgrading):' /tmp/dryrun.log; then
-	echo ":notice::Detected package replacements. Aborting build."
-	exit 1
+    echo ":notice::Detected package replacements. Aborting build."
+    exit 1
 fi
 
 ### Install packages

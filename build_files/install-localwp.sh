@@ -9,7 +9,7 @@ set -ouex pipefail
 
 ### Packages array
 packages=(
-	https://cdn.localwp.com/releases-stable/10.1.1+6939/local-10.1.1-linux.rpm
+    https://cdn.localwp.com/releases-stable/10.1.1+6939/local-10.1.1-linux.rpm
 )
 
 ### Check if base image packages are being replaced
@@ -18,8 +18,8 @@ dnf5 -y install --setopt=tsflags=test "${packages[@]}" 2>&1 | tee /tmp/dryrun.lo
 
 # Check log for upgrading and downgrading
 if grep -qE '^(Upgrading|Downgrading):' /tmp/dryrun.log; then
-	echo "::notice::Detected package replacements. Aborting build."
-	exit 1
+    echo "::notice::Detected package replacements. Aborting build."
+    exit 1
 fi
 
 ### Install packages

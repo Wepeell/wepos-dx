@@ -18,24 +18,24 @@ mkdir -p /var/opt
 ### Version lock packages
 # Packages array
 packages_lock=(
-	# localwp dependencies
-	nss
-	nss-softokn
-	nss-softokn-freebl
-	nss-sysinit
-	nss-util
+    # localwp dependencies
+    nss
+    nss-softokn
+    nss-softokn-freebl
+    nss-sysinit
+    nss-util
 )
 
 # Loop array
 for pkg in "${packages_lock[@]}"; do
-	# Check if package is insalled
-	if ! rpm -q --quiet "$pkg"; then
-		echo "Skipping $pkg (not installed)"
-		continue
-	fi
+    # Check if package is insalled
+    if ! rpm -q --quiet "$pkg"; then
+        echo "Skipping $pkg (not installed)"
+        continue
+    fi
 
-	# Version lock the package
-	while IFS= read -r nevra; do
-		dnf5 versionlock add "$nevra"
-	done < <(rpm -q "$pkg")
+    # Version lock the package
+    while IFS= read -r nevra; do
+        dnf5 versionlock add "$nevra"
+    done < <(rpm -q "$pkg")
 done

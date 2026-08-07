@@ -12,6 +12,6 @@ dnf5 clean all
 # rm -f /etc/skel/.config/autostart/steam.desktop
 
 ### Add kargs
-# cat <<'EOF' > "/usr/lib/bootc/kargs.d/99-amd.toml"
+# tee "/usr/lib/bootc/kargs.d/99-amd.toml" <<'EOF'
 # kargs = ["amdgpu.ppfeaturemask=0xffffffff"]
 # EOF

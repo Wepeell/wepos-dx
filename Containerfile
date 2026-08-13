@@ -6,12 +6,13 @@ COPY build_files /
 FROM ghcr.io/wepeell/wepos:latest@sha256:2aea8094deb3e029489849f1c0235ed1dae181e389e6ee34cd5dc321f39ef2c4
 
 ## Other possible base images include:
-# FROM ghcr.io/ublue-os/bazzite:latest
-# FROM ghcr.io/ublue-os/bluefin-nvidia:stable
+# FROM ghcr.io/ublue-os/bazzite:testing
+# FROM ghcr.io/ublue-os/aurora:stable
+# FROM ghcr.io/ublue-os/bluefin-nvidia-open:stable
 # 
 # ... and so on, here are more base images
 # Universal Blue Images: https://github.com/orgs/ublue-os/packages
-# Fedora base image: quay.io/fedora/fedora-bootc:41
+# Fedora base image: quay.io/fedora/fedora-bootc:44
 # CentOS base images: quay.io/centos-bootc/centos-bootc:stream10
 
 ### [IM]MUTABLE /opt
@@ -34,7 +35,7 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/log \
     --mount=type=tmpfs,dst=/tmp \
     /ctx/build.sh
-    
+
 ### LINTING
 ## Verify final image and contents are correct.
 RUN bootc container lint

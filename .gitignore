@@ -5,3 +5,4 @@ _build-*/**
 *.kate-swp
 patch.diff
 *_chunkah_*
+*_rpm-ostree_*

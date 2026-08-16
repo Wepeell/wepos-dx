@@ -15,27 +15,18 @@ mkdir -p /var/opt
 # This should fix Anaconda ISO building
 # sed -i 's/^enabled=.*/enabled=0/' /etc/yum.repos.d/terra-mesa.repo
 
-### Version lock packages
-# Packages array
-packages_lock=(
-    # localwp dependencies
+### Enable RPM Fusion Repository
+# dnf5 -y config-manager setopt "rpmfusion-nonfree".enabled=true
+# dnf5 -y config-manager setopt "rpmfusion-free".enabled=true
+# dnf5 -y config-manager setopt "*rpmfusion*".enabled=true
+
+# Packages to version lock
+packages=(
     nss
     nss-softokn
     nss-softokn-freebl
     nss-sysinit
     nss-util
 )
-
-# Loop array
-for pkg in "${packages_lock[@]}"; do
-    # Check if package is insalled
-    if ! rpm -q --quiet "$pkg"; then
-        echo "Skipping $pkg (not installed)"
-        continue
-    fi
-
-    # Version lock the package
-    while IFS= read -r nevra; do
-        dnf5 versionlock add "$nevra"
-    done < <(rpm -q "$pkg")
-done
+# Version lock packages
+dnf5 versionlock add "${packages[@]}"

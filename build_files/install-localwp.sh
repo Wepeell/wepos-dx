@@ -7,14 +7,13 @@ set -ouex pipefail
 # https://docs.docker.com/engine/install/fedora/
 # https://docs.docker.com/engine/install/linux-postinstall
 
-### Packages array
+# Packages to install
 packages=(
     https://cdn.localwp.com/releases-stable/10.1.1+6939/local-10.1.1-linux.rpm
 )
 
-### Check if base image packages are being replaced
-# Dry run
-dnf5 -y install --setopt=tsflags=test "${packages[@]}" 2>&1 | tee /tmp/dryrun.log
+# Check if base image packages are being replaced with a dry run
+dnf5 --setopt=tsflags=test -y install "${packages[@]}" 2>&1 | tee /tmp/dryrun.log
 
 # Check log for upgrading and downgrading
 if grep -qE '^(Upgrading|Downgrading):' /tmp/dryrun.log; then
@@ -22,5 +21,5 @@ if grep -qE '^(Upgrading|Downgrading):' /tmp/dryrun.log; then
     exit 1
 fi
 
-### Install packages
+# Install packages
 dnf5 -y install "${packages[@]}"

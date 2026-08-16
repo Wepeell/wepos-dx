@@ -7,10 +7,10 @@ set -ouex pipefail
 # https://docs.docker.com/engine/install/fedora/
 # https://docs.docker.com/engine/install/linux-postinstall
 
-### Repofile
+# Repofile
 repofile="https://download.docker.com/linux/fedora/docker-ce.repo"
 
-### Packages array
+# Packages to install
 packages=(
     containerd.io
     docker-buildx-plugin
@@ -19,12 +19,11 @@ packages=(
     docker-compose-plugin
 )
 
-# Add repo
-dnf5 config-manager addrepo --from-repofile="$repofile"
+# Enable repo
+dnf5 -y config-manager addrepo --from-repofile="$repofile"
 
-### Check if base image packages are being replaced
-# Dry run
-dnf5 -y install --setopt=tsflags=test "${packages[@]}" 2>&1 | tee /tmp/dryrun.log
+# Check if base image packages are being replaced with a dry run
+dnf5 --setopt=tsflags=test -y install "${packages[@]}" 2>&1 | tee /tmp/dryrun.log
 
 # Check log for upgrading and downgrading
 if grep -qE '^(Upgrading|Downgrading):' /tmp/dryrun.log; then
@@ -32,11 +31,11 @@ if grep -qE '^(Upgrading|Downgrading):' /tmp/dryrun.log; then
     exit 1
 fi
 
-### Install packages
+# Install packages
 dnf5 -y install "${packages[@]}"
 
 # Disable repo
-dnf5 config-manager setopt docker-ce-stable.enabled=0
+dnf5 -y config-manager setopt docker-ce-stable.enabled=false
 
 # Load iptable_nat module for docker-in-docker.
 # See:

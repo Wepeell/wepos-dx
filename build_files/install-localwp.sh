@@ -3,13 +3,11 @@
 set -ouex pipefail
 
 ### Links
-# https://github.com/ublue-os/bazzite-dx/blob/main/build_files/20-install-apps.sh
-# https://docs.docker.com/engine/install/fedora/
-# https://docs.docker.com/engine/install/linux-postinstall
+# https://localwp.com/releases/
 
 # Packages to install
 packages=(
-    https://cdn.localwp.com/releases-stable/10.1.1+6939/local-10.1.1-linux.rpm
+    https://cdn.localwp.com/releases-stable/10.1.2+7004/local-10.1.2-linux.rpm
 )
 
 # Check if base image packages are being replaced with a dry run

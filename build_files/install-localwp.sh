@@ -7,7 +7,7 @@ set -ouex pipefail
 
 # Packages to install
 packages=(
-    https://cdn.localwp.com/releases-stable/10.1.2+7004/local-10.1.2-linux.rpm
+    https://cdn.localwp.com/releases-stable/10.2.0+7022/local-10.2.0-linux.rpm
 )
 
 # Check if base image packages are being replaced with a dry run
